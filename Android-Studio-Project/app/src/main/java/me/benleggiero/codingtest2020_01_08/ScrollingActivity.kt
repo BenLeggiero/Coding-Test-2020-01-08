@@ -46,7 +46,7 @@ class ScrollingActivity : AppCompatActivity() {
         this.scrollListener = newScrollListener
         recyclerView.addOnScrollListener(newScrollListener)
 
-        ReadAllProductsTask().
+        ReadAllProductsTask()
     }
 
     override fun onResume() {
