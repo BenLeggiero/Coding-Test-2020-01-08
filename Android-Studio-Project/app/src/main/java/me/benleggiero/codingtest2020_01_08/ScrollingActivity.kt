@@ -20,6 +20,11 @@ class ScrollingActivity : AppCompatActivity() {
 
     private var scrollListener: EndlessRecyclerViewScrollListener? = null
 
+    private val recyclerViewAdapter = ProductsRecyclerViewAdapter(
+        context = this,
+        products = listOf(Product.loading)
+    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +35,7 @@ class ScrollingActivity : AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BenLeggiero/Coding-Test-2020-01-08")))
         }
 
-        val adapter = ProductsRecyclerViewAdapter(listOf(
-            Product.loading
-        ))
-        recyclerView.adapter = adapter
+        recyclerView.adapter = recyclerViewAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         val newScrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -46,7 +48,7 @@ class ScrollingActivity : AppCompatActivity() {
         this.scrollListener = newScrollListener
         recyclerView.addOnScrollListener(newScrollListener)
 
-        ReadAllProductsTask()
+        ReadAllProductsTask().execute()
     }
 
     override fun onResume() {
@@ -55,9 +57,17 @@ class ScrollingActivity : AppCompatActivity() {
 
 
 
-    private class ReadAllProductsTask: AsyncTask<Unit, Unit, List<Product>>() {
-        override fun doInBackground(vararg params: Unit?) =
-            ProductsLoader.loadProducts()
+    private inner class ReadAllProductsTask: AsyncTask<Unit, Unit, List<Product>>() {
+        override fun doInBackground(vararg params: Unit?) = ProductsLoader.loadProducts(inputStream = resources.openRawResource(R.raw.products))
+
+
+        override fun onPostExecute(result: List<Product>?) {
+            super.onPostExecute(result)
+
+            if (null != result) {
+                recyclerViewAdapter.products = result
+            }
+        }
     }
 }
 
@@ -66,5 +76,5 @@ class ScrollingActivity : AppCompatActivity() {
 // MARK: - Private functionality
 
 private fun ScrollingActivity.loadNextProduct(pageNumber: Int) {
-    Log.e("Placeholder", "Not yet implemented; would load page $pageNumber")
+//    Log.e("Placeholder", "Not yet implemented; would load page $pageNumber")
 }

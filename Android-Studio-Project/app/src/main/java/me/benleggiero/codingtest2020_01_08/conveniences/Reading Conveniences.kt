@@ -1,4 +1,4 @@
-package me.benleggiero.codingtest2020_01_08.serialization
+package me.benleggiero.codingtest2020_01_08.conveniences
 
 import android.content.res.Resources
 import android.util.JsonReader
@@ -42,6 +42,12 @@ fun <Result> readJson(reader: Reader, processor: (JsonReader) -> Result): Result
 
 fun <Result> readJson(resourceId: Int, processor: (JsonReader) -> Result): Result =
     readStream(resourceId = resourceId) { inputStreamReader ->
+        readJson(inputStreamReader, processor)
+    }
+
+
+fun <Result> readJson(inputStream: InputStream, processor: (JsonReader) -> Result): Result =
+    readStream(inputStream) { inputStreamReader ->
         readJson(inputStreamReader, processor)
     }
 

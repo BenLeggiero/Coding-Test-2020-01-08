@@ -2,6 +2,7 @@ package me.benleggiero.codingtest2020_01_08.serialization
 
 import android.util.JsonReader
 import android.util.Log
+import me.benleggiero.codingtest2020_01_08.conveniences.forEachNameInObject
 import org.json.JSONObject
 
 data class ProductJson(
@@ -13,7 +14,7 @@ data class ProductJson(
     companion object {
 
         private const val titleJsonKey = """title"""
-        private const val authorJsonKey = """authorName"""
+        private const val authorJsonKey = """author"""
         private const val imageUriStringJsonKey = """imageURL"""
 
         operator fun invoke(rawJsonObject: JSONObject): ProductJson? {
@@ -26,7 +27,6 @@ data class ProductJson(
 
 
         operator fun invoke(jsonReader: JsonReader): ProductJson? {
-
             var title: String? = null
             var authorName: String? = null
             var imageUriString: String? = null

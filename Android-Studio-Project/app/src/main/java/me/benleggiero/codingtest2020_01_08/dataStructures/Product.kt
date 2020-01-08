@@ -1,7 +1,9 @@
 package me.benleggiero.codingtest2020_01_08.dataStructures
 
 import android.net.Uri
+import me.benleggiero.codingtest2020_01_08.conveniences.enforcingHttps
 import me.benleggiero.codingtest2020_01_08.serialization.ProductJson
+import java.net.URL
 
 data class Product(
     val title: String,
@@ -11,7 +13,7 @@ data class Product(
     constructor(json: ProductJson): this(
         title = json.title,
         author = json.authorName,
-        image = Image.uri(json.imageUriString.let { Uri.parse(it) })
+        image = json.imageUriString?.let { Image.url(URL(it.enforcingHttps)) } ?: Image.none
     )
 
 
@@ -30,6 +32,6 @@ data class Product(
     sealed class Image {
         object none: Image()
         object loading: Image()
-        class uri(val uri: Uri): Image()
+        class url(val url: URL): Image()
     }
 }
