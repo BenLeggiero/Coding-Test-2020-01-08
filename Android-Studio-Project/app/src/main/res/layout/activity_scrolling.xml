@@ -41,11 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:foregroundGravity="fill"
-        app:fabCustomSize="57dp"
+        app:backgroundTint="#1A1A1A"
+        app:fabCustomSize="64dp"
         app:fabSize="normal"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:maxImageSize="64dp"
+        app:maxImageSize="70dp"
         app:srcCompat="@drawable/ic_insignia" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
