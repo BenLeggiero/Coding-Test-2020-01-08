@@ -2,6 +2,7 @@ package me.benleggiero.codingtest2020_01_08
 
 import android.content.Intent
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +11,9 @@ import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import me.benleggiero.codingtest2020_01_08.thirdParty.EndlessRecyclerViewScrollListener
 import androidx.recyclerview.widget.RecyclerView
-
-
-
-
+import me.benleggiero.codingtest2020_01_08.controllers.ProductsRecyclerViewAdapter
+import me.benleggiero.codingtest2020_01_08.dataStructures.Product
+import me.benleggiero.codingtest2020_01_08.serialization.ProductsLoader
 
 
 class ScrollingActivity : AppCompatActivity() {
@@ -30,6 +30,10 @@ class ScrollingActivity : AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/BenLeggiero/Coding-Test-2020-01-08")))
         }
 
+        val adapter = ProductsRecyclerViewAdapter(listOf(
+            Product.loading
+        ))
+        recyclerView.adapter = adapter
         val linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         val newScrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -41,10 +45,19 @@ class ScrollingActivity : AppCompatActivity() {
 
         this.scrollListener = newScrollListener
         recyclerView.addOnScrollListener(newScrollListener)
+
+        ReadAllProductsTask().
     }
 
     override fun onResume() {
         super.onResume()
+    }
+
+
+
+    private class ReadAllProductsTask: AsyncTask<Unit, Unit, List<Product>>() {
+        override fun doInBackground(vararg params: Unit?) =
+            ProductsLoader.loadProducts()
     }
 }
 

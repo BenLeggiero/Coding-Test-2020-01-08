@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import me.benleggiero.codingtest2020_01_08.*
+import me.benleggiero.codingtest2020_01_08.dataStructures.Product.Image.*
 
 
 class ProductsRecyclerViewAdapter(
@@ -26,11 +27,10 @@ class ProductsRecyclerViewAdapter(
         holder.titleTextView.text = product.title
         holder.authorTextView.text = product.author ?: ""
 
-        if (null != product.imageUri) {
-            holder.imageView.setImageURI(product.imageUri)
-        }
-        else {
-            holder.imageView.setImageResource(R.drawable.ic_broken_image_black_24dp)
+        when (product.image) {
+            is none -> holder.imageView.setImageResource(R.drawable.ic_broken_image_black_24dp)
+            is loading -> holder.imageView.setImageResource(R.drawable.ic_cached_black_24dp)
+            is uri -> holder.imageView.setImageURI(product.image.uri)
         }
     }
 
