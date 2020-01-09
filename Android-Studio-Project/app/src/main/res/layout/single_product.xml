@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:singleLine="true"
             android:text="Product Title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -35,6 +36,7 @@
             android:id="@+id/productAuthorName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="Author Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>
