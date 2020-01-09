@@ -1,7 +1,6 @@
 package me.benleggiero.codingtest2020_01_08.controllers
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import me.benleggiero.codingtest2020_01_08.*
 import me.benleggiero.codingtest2020_01_08.conveniences.Bitmap
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product.Image.*
@@ -28,7 +26,7 @@ class ProductsRecyclerViewAdapter(
     : RecyclerView.Adapter<ProductsRecyclerViewAdapter.ViewHolder>()
 {
 
-    var products by Delegates.observable(initialValue = products) { _, _, _ ->
+    var products by Delegates.observable(initialValue = products.toMutableList()) { _, _, _ ->
         this.notifyDataSetChanged()
     }
 
@@ -66,6 +64,16 @@ class ProductsRecyclerViewAdapter(
     }
 
 
+    fun updateProduct(updatedProduct: Product) {
+        val indexToUpdate = products.indexOfFirst { it.locallyUniqueIdentifier == updatedProduct.locallyUniqueIdentifier }
+
+        if (indexToUpdate < 0) {
+            return
+        }
+
+        products[indexToUpdate] = updatedProduct
+        this.notifyItemChanged(indexToUpdate)
+    }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

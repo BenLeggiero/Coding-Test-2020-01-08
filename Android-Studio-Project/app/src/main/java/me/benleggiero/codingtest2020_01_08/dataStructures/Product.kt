@@ -15,6 +15,7 @@ data class Product(
 )
     : Parcelable
 {
+    val locallyUniqueIdentifier: Int = title.hashCode() + author.hashCode()
 
     constructor(json: ProductJson): this(
         title = json.title,
@@ -25,9 +26,7 @@ data class Product(
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString(),
-        Image(parcel) ?: Image.none.also {
-            Log.e("Parcel", "Could not create image from parcel")
-        },// error("Could not create image from parcel"),
+        Image(parcel) ?: Image.none.also { Log.e("Parcel", "Could not create image from parcel") },
         parcel.readByte() != 0.toByte()
     )
 
@@ -38,12 +37,13 @@ data class Product(
 
     companion object CREATOR : Parcelable.Creator<Product> {
 
-        val loading: Product
-            get() = Product(
+        val loading by lazy {
+            Product(
                 title = "Loading...",
                 author = "Please wait",
                 image = Image.loading
             )
+        }
 
 
         override fun createFromParcel(parcel: Parcel) = Product(parcel)

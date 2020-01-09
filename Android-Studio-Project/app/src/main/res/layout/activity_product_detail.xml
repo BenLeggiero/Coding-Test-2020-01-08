@@ -40,7 +40,7 @@
                     android:text="@string/loadingText"
                     style="@android:style/TextAppearance.Material.Widget.Toolbar.Title"
                     android:textColor="@android:color/primary_text_dark"
-                    android:maxLines="5"/>
+                    android:maxLines="4"/>
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>

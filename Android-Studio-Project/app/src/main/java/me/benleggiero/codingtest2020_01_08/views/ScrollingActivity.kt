@@ -1,5 +1,6 @@
 package me.benleggiero.codingtest2020_01_08.views
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
@@ -62,9 +63,28 @@ class ScrollingActivity : AppCompatActivity() {
 
 
     private fun userDidTapItem(tappedProduct: Product) {
+
+        if (tappedProduct.locallyUniqueIdentifier == Product.loading.locallyUniqueIdentifier) {
+            return
+        }
+
         val intent = Intent(this, ProductDetailActivity::class.java)
         intent.putExtra(ProductDetailActivity.productExtraKey, tappedProduct)
-        startActivity(intent)
+        startActivityForResult(intent, ProductDetailActivity.requestCode)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (
+            requestCode == ProductDetailActivity.requestCode
+            && resultCode == RESULT_OK
+            && null != data
+        ) {
+            val product = data.getParcelableExtra<Product>(ProductDetailActivity.productExtraKey) ?: return
+            recyclerViewAdapter.updateProduct(product)
+        }
     }
 
 
@@ -77,7 +97,7 @@ class ScrollingActivity : AppCompatActivity() {
             super.onPostExecute(result)
 
             if (null != result) {
-                recyclerViewAdapter.products = result
+                recyclerViewAdapter.products = result.toMutableList()
             }
         }
     }

@@ -1,17 +1,19 @@
 package me.benleggiero.codingtest2020_01_08.views
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
-
 import kotlinx.android.synthetic.main.activity_product_detail.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
-import kotlinx.android.synthetic.main.single_product.*
 import me.benleggiero.codingtest2020_01_08.R
 import me.benleggiero.codingtest2020_01_08.conveniences.Bitmap
 import me.benleggiero.codingtest2020_01_08.conveniences.async
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product
+
+
 
 class ProductDetailActivity(
     var product: Product? = null
@@ -23,6 +25,16 @@ class ProductDetailActivity(
         set(newValue) { product_detail_title.text = newValue }
 
 
+    private val resourceIdForFabIcon get() = when (product?.isFavorited) {
+        true -> R.drawable.ic_star_white_24dp
+        false -> R.drawable.ic_star_border_white_24dp
+        null -> R.drawable.ic_cached_black_24dp
+    }
+
+
+
+    // MARK: - Lifecycle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
@@ -32,7 +44,7 @@ class ProductDetailActivity(
 
         fab.setOnClickListener { view ->
             product?.isFavorited = product?.isFavorited?.not() ?: return@setOnClickListener
-            updateUi()
+            updateOnlyFavButtonUi()
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -45,9 +57,37 @@ class ProductDetailActivity(
     }
 
 
+    override fun finish() {
+        saveProductIntoResultIntent()
+        super.finish()
+    }
+
+
+    override fun onNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+
+    private fun saveProductIntoResultIntent() {
+        val resultIntent = Intent()
+        resultIntent.putExtra(productExtraKey, product)
+        setResult(RESULT_OK, resultIntent)
+    }
+
+
+    // MARK: - Functionality
+
     fun updateUi() {
         multiLineTitle = product?.title ?: getString(R.string.loadingText)
-        fab.setImageResource(resourceIdForFabIcon)
+
+        updateOnlyFavButtonUi()
 
         val author = product?.author
         if (null == author) {
@@ -57,9 +97,7 @@ class ProductDetailActivity(
             productDetailAuthorNameTextView.text = getString(R.string.productDetailAuthorTextTemplate, author)
         }
 
-        val image = product?.image
-
-        when (image) {
+        when (val image = product?.image) {
             is Product.Image.none, null -> productDetailImageView.visibility = GONE
 
             is Product.Image.loading -> {
@@ -83,15 +121,14 @@ class ProductDetailActivity(
     }
 
 
-    private val resourceIdForFabIcon get() = when (product?.isFavorited) {
-        true -> R.drawable.ic_star_white_24dp
-        false -> R.drawable.ic_star_border_white_24dp
-        null -> R.drawable.ic_cached_black_24dp
+    private fun updateOnlyFavButtonUi() {
+        fab.setImageResource(resourceIdForFabIcon)
     }
 
 
 
     companion object {
         const val productExtraKey = """product"""
+        const val requestCode = 1
     }
 }
