@@ -14,6 +14,7 @@ import android.widget.TextView
 import me.benleggiero.codingtest2020_01_08.*
 import me.benleggiero.codingtest2020_01_08.conveniences.Bitmap
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product.Image.*
+import java.lang.Integer.min
 import java.net.URL
 import kotlin.properties.Delegates
 
@@ -34,7 +35,7 @@ class ProductsRecyclerViewAdapter(
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_product, parent, false))
 
 
-    override fun getItemCount() = products.size
+    override fun getItemCount() = min(100, products.size)
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
