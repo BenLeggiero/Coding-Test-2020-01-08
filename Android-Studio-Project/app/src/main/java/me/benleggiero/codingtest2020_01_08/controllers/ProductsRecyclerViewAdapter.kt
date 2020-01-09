@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
 import me.benleggiero.codingtest2020_01_08.*
@@ -43,6 +45,7 @@ class ProductsRecyclerViewAdapter(
 
         holder.titleTextView.text = product.title
         holder.authorTextView.text = product.author ?: ""
+        holder.favoriteIconImageView.visibility = if (product.isFavorited) { VISIBLE } else { GONE }
 
         when (product.image) {
             is none -> holder.imageView.setImageResource(R.drawable.ic_broken_image_black_24dp)
@@ -80,6 +83,7 @@ class ProductsRecyclerViewAdapter(
         val imageView = itemView.findViewById(R.id.productImageView) as ImageView
         val titleTextView = itemView.findViewById(R.id.productTitle) as TextView
         val authorTextView = itemView.findViewById(R.id.productAuthorName) as TextView
+        val favoriteIconImageView = itemView.findViewById(R.id.singleProductFavoriteIconImageView) as ImageView
     }
 
 
