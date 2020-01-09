@@ -1,7 +1,6 @@
 package me.benleggiero.codingtest2020_01_08.controllers
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.view.ViewGroup
@@ -21,12 +20,13 @@ import kotlin.properties.Delegates
 
 class ProductsRecyclerViewAdapter(
     val context: Activity,
-    products: List<Product>
+    products: List<Product>,
+    val onUserDidTapItem: (tappedProduct: Product) -> Unit
 )
     : RecyclerView.Adapter<ProductsRecyclerViewAdapter.ViewHolder>()
 {
 
-    var products by Delegates.observable(initialValue = products) { _, _, _ ->
+    var products by Delegates.observable(initialValue = products.toMutableList()) { _, _, _ ->
         this.notifyDataSetChanged()
     }
 
@@ -57,9 +57,23 @@ class ProductsRecyclerViewAdapter(
                 }).execute()
             }
         }
+
+        holder.itemView.setOnClickListener {
+            onUserDidTapItem(product)
+        }
     }
 
 
+    fun updateProduct(updatedProduct: Product) {
+        val indexToUpdate = products.indexOfFirst { it.locallyUniqueIdentifier == updatedProduct.locallyUniqueIdentifier }
+
+        if (indexToUpdate < 0) {
+            return
+        }
+
+        products[indexToUpdate] = updatedProduct
+        this.notifyItemChanged(indexToUpdate)
+    }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
