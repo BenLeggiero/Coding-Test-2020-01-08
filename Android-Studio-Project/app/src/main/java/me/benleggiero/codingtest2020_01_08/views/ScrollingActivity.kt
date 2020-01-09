@@ -1,19 +1,21 @@
-package me.benleggiero.codingtest2020_01_08
+package me.benleggiero.codingtest2020_01_08.views
 
 import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 import me.benleggiero.codingtest2020_01_08.thirdParty.EndlessRecyclerViewScrollListener
 import androidx.recyclerview.widget.RecyclerView
+import me.benleggiero.codingtest2020_01_08.*
 import me.benleggiero.codingtest2020_01_08.controllers.ProductsRecyclerViewAdapter
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product
 import me.benleggiero.codingtest2020_01_08.serialization.ProductsLoader
+
+
 
 
 class ScrollingActivity : AppCompatActivity() {
@@ -22,7 +24,8 @@ class ScrollingActivity : AppCompatActivity() {
 
     private val recyclerViewAdapter = ProductsRecyclerViewAdapter(
         context = this,
-        products = listOf(Product.loading)
+        products = listOf(Product.loading),
+        onUserDidTapItem = ::userDidTapItem
     )
 
 
@@ -55,6 +58,13 @@ class ScrollingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+    }
+
+
+    private fun userDidTapItem(tappedProduct: Product) {
+        val intent = Intent(this, ProductDetailActivity::class.java)
+        intent.putExtra(ProductDetailActivity.productExtraKey, tappedProduct)
+        startActivity(intent)
     }
 
 

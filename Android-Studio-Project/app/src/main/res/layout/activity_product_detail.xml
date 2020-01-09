@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".views.ScrollingActivity">
+    tools:context=".views.ProductDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+        android:id="@+id/app_bar_product_detail"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
@@ -26,14 +26,27 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="none"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
+                <TextView
+                    android:id="@+id/product_detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="90dp"
+                    android:gravity="bottom|start"
+                    android:text="@string/loadingText"
+                    style="@android:style/TextAppearance.Material.Widget.Toolbar.Title"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:maxLines="5"/>
+
+            </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_scrolling" />
+    <include layout="@layout/content_product_detail" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -41,12 +54,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:foregroundGravity="fill"
-        app:backgroundTint="#1A1A1A"
-        app:fabCustomSize="64dp"
+        app:backgroundTint="@color/fabFavBackgroundColor"
         app:fabSize="normal"
+        app:layout_anchor="@id/toolbar_layout"
         app:layout_anchorGravity="bottom|end"
-        android:layout_gravity="bottom|end"
-        app:maxImageSize="70dp"
-        app:srcCompat="@drawable/ic_insignia" />
+        app:srcCompat="@drawable/ic_star_border_white_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

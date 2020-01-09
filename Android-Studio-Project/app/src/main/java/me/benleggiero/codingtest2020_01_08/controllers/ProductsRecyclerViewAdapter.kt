@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import me.benleggiero.codingtest2020_01_08.*
 import me.benleggiero.codingtest2020_01_08.conveniences.Bitmap
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product.Image.*
@@ -21,7 +22,8 @@ import kotlin.properties.Delegates
 
 class ProductsRecyclerViewAdapter(
     val context: Activity,
-    products: List<Product>
+    products: List<Product>,
+    val onUserDidTapItem: (tappedProduct: Product) -> Unit
 )
     : RecyclerView.Adapter<ProductsRecyclerViewAdapter.ViewHolder>()
 {
@@ -56,6 +58,10 @@ class ProductsRecyclerViewAdapter(
                     }
                 }).execute()
             }
+        }
+
+        holder.itemView.setOnClickListener {
+            onUserDidTapItem(product)
         }
     }
 
