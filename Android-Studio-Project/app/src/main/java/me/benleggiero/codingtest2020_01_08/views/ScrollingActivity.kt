@@ -28,7 +28,7 @@ class ScrollingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.title = "Harry Potter Books"
+        this.title = "Ben Leggiero Coding Test 2020-01-08"
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
@@ -36,8 +36,10 @@ class ScrollingActivity : AppCompatActivity() {
         }
 
         recyclerView.adapter = recyclerViewAdapter
+
         val linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
+
         val newScrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
                 // Triggered only when new data needs to be appended to the list
@@ -76,5 +78,5 @@ class ScrollingActivity : AppCompatActivity() {
 // MARK: - Private functionality
 
 private fun ScrollingActivity.loadNextProduct(pageNumber: Int) {
-//    Log.e("Placeholder", "Not yet implemented; would load page $pageNumber")
+    // See https://github.com/BenLeggiero/Coding-Test-2020-01-08/tree/feature/Lazy-Loading
 }
