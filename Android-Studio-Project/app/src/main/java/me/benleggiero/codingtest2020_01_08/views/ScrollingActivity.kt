@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
@@ -13,10 +14,11 @@ import me.benleggiero.codingtest2020_01_08.thirdParty.EndlessRecyclerViewScrollL
 import androidx.recyclerview.widget.RecyclerView
 import me.benleggiero.codingtest2020_01_08.*
 import me.benleggiero.codingtest2020_01_08.controllers.ProductsRecyclerViewAdapter
+import me.benleggiero.codingtest2020_01_08.conveniences.currentMaterialColumnCount
 import me.benleggiero.codingtest2020_01_08.dataStructures.Product
 import me.benleggiero.codingtest2020_01_08.serialization.ProductsLoader
-
-
+import java.lang.Integer.max
+import java.lang.Integer.min
 
 
 class ScrollingActivity : AppCompatActivity() {
@@ -41,7 +43,7 @@ class ScrollingActivity : AppCompatActivity() {
 
         recyclerView.adapter = recyclerViewAdapter
 
-        val linearLayoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = GridLayoutManager(this, max(1, currentMaterialColumnCount / 2))
         recyclerView.layoutManager = linearLayoutManager
 
         val newScrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -58,6 +60,7 @@ class ScrollingActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        (recyclerView.layoutManager as? GridLayoutManager)?.spanCount = max(1, currentMaterialColumnCount / 2)
         super.onResume()
     }
 
